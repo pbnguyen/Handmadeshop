@@ -1,0 +1,177 @@
+timestamp: 2012-11-30T23:24:29.743000
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2012-11-30T23:24:29.992000
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-11-30T23:24:30.101000
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-11-30T23:24:30.195000
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2012-11-30T23:24:30.320000
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-11-30T23:24:30.445000
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2012-11-30T23:24:30.569000
+CREATE TABLE product(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    price DOUBLE,
+    description TEXT,
+    image CHAR(512),
+    sortable CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-11-30T23:24:30.710000
+CREATE TABLE reviews(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    prod INTEGER REFERENCES product (id) ON DELETE CASCADE,
+    yname CHAR(512),
+    review TEXT,
+    rating INTEGER
+);
+success!
+timestamp: 2012-11-30T23:24:30.897000
+CREATE TABLE customer(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    shipping_address CHAR(512),
+    city CHAR(512),
+    state CHAR(512),
+    zip_code CHAR(512),
+    country CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-11-30T23:24:31.069000
+CREATE TABLE sale(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    invoice CHAR(512),
+    creditcard CHAR(512),
+    buyer INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    product INTEGER REFERENCES product (id) ON DELETE CASCADE,
+    quantity INTEGER,
+    price DOUBLE,
+    shipped CHAR(1),
+    shipping_address CHAR(512),
+    city CHAR(512),
+    state CHAR(512),
+    zip_code CHAR(512),
+    country CHAR(512),
+    date TIMESTAMP,
+    delivery_date TIMESTAMP,
+    tracking_number CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-12-01T16:43:30.778000
+ALTER TABLE reviews ADD modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE;
+timestamp: 2012-12-01T16:43:31.044000
+ALTER TABLE reviews ADD is_active CHAR(1);
+timestamp: 2012-12-01T16:43:31.168000
+ALTER TABLE reviews ADD created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE;
+timestamp: 2012-12-01T16:43:31.278000
+ALTER TABLE reviews ADD created_on TIMESTAMP;
+timestamp: 2012-12-01T16:43:31.402000
+ALTER TABLE reviews ADD modified_on TIMESTAMP;
+timestamp: 2012-12-01T17:15:29.021000
+CREATE TABLE rev(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product INTEGER REFERENCES product (id) ON DELETE CASCADE,
+    name CHAR(512),
+    rview TEXT,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-12-01T17:23:05.401000
+ALTER TABLE rev ADD tenpro INTEGER REFERENCES product (id) ON DELETE CASCADE;
+timestamp: 2012-12-01T17:28:52.626000
+CREATE TABLE sanpham(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512) NOT NULL,
+    price DOUBLE,
+    description TEXT,
+    image CHAR(512),
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-12-01T17:28:53.063000
+CREATE TABLE danhgia(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tenpro INTEGER REFERENCES sanpham (id) ON DELETE CASCADE,
+    your_name CHAR(512),
+    rview TEXT,
+    is_active CHAR(1),
+    created_on TIMESTAMP,
+    created_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    modified_on TIMESTAMP,
+    modified_by INTEGER REFERENCES auth_user (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-12-01T18:34:24.490000
+ALTER TABLE sanpham ADD spname CHAR(512);
+timestamp: 2012-12-02T15:27:12.198000
+ALTER TABLE danhgia ADD rating CHAR(512);
+timestamp: 2012-12-03T00:02:09.739000
+ALTER TABLE danhgia ADD your_city CHAR(512);

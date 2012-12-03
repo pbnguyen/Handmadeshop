@@ -1,0 +1,19 @@
+{{extend 'layout.html'}}
+<h4>Name of Products -------------- Price ----- Quantity</h4>
+<table width="40%">
+  {{for id, qty in cart.items():}}{{p=db.sanpham(id)}}
+  <tr>
+    <td>{{=p.spname}}</td>
+    <td>${{=p.price}}</td>
+    <td>
+        {{if auth.user:}}
+      <span id="{{='item%s'%p.id}}">{{=qty}}</span>
+     {{pass}}
+    </td>
+  </tr>
+  {{pass}}
+</table>
+<br>
+<h4> Total: {{=total}}$ </h4>
+<br>
+{{=form}}

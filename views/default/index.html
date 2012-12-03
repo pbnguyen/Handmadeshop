@@ -1,0 +1,49 @@
+{{extend 'layout.html'}}
+
+<table>
+{{for p in products:}}
+  <tr>
+    <td><img src="{{=URL('download',args=p.image)}}" height="300px"/></td>
+    <td><h5>{{=p.spname}} - ${{=p.price}}</h5></td>   
+     <td>
+    {{if auth.user:}}
+     <span id="{{="item%s"%p.id}}">{{=session.cart.get(p.id,0)}}</span> in cart
+     {{=A('add to cart',callback=URL('cart_callback',vars=dict(id=p.id,action='add'),user_signature=True),target='item%s'%p.id,_class='button pill')}}
+         {{pass}}   
+         </td>
+ <td>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="jquery.js"></script>
+<script>
+$(document).ready(function(){
+  $("#hide").click(function(){
+    $("p").hide();
+  });
+  $("#show").click(function(){
+    $("p").show();
+  });
+});
+</script>
+</head>
+<body>
+<button id="show">Detail</button>
+<button id="hide">Hide</button>
+    <h3> <p style="display: none">  Description </p></h3>
+  <p style="display: none">  {{=p.description}} </p>    
+    <h3> <p style="display: none">  Reviews and Rating </p>  </h3>
+ 	{{for r in reviews:}}    
+      {{if p.id == r.tenpro:}}
+      <h5> <p style="display: none">  {{=r.your_name}}, {{=r.your_city}} - {{=r.rating}} </p></h5>    
+ 		<p style="display: none">  {{=r.rview}} </p>
+    {{pass}}
+
+</body>
+</html>
+ {{pass}}
+ </td>     
+</tr>
+
+{{pass}}
+</table>

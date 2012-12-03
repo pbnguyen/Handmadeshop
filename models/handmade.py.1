@@ -1,0 +1,54 @@
+db.define_table('product',
+   Field('name',notnull=True),
+   Field('price','double'),
+   Field('description','text'),
+   Field('image','upload'),
+   Field('sortable'),
+   auth.signature,
+   format='%(name)s')
+   
+db.define_table('reviews',
+   Field('prod',db.product),
+   Field('yname'),
+   Field('review','text'),
+   Field('rating','integer'),
+   auth.signature,
+   format='%(review)s')
+   
+db.define_table('rev',
+   Field('nameproduct',db.product),
+   Field('name'),
+   Field('rview','text'),
+   auth.signature,
+   format='%(rview)s')   
+
+   
+
+db.define_table('customer',
+   Field('shipping_address'),
+   Field('city'),
+   Field('state'),
+   Field('zip_code'),
+   Field('country'),
+   auth.signature),
+   
+
+db.define_table('sale',
+   Field('invoice'),
+   Field('creditcard'),
+   Field('buyer',db.auth_user),
+   Field('product',db.product),
+   Field('quantity','integer'),
+   Field('price','double'),
+   Field('shipped','boolean',default=False),
+   Field('shipping_address'),
+   Field('city'),
+   Field('state'),
+   Field('zip_code'),
+   Field('country'),
+   Field('date','datetime'),
+   Field('delivery_date','datetime'),
+   Field('tracking_number'),
+   auth.signature),
+
+session.cart = session.cart or {}
